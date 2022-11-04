@@ -9,19 +9,8 @@ const structure = [
 			},
 
 			{
-				id: "placeholder",
-				hash: '/placeholder'
-			}
-		]
-	},
-
-	{
-		id: "profile",
-		hash: "profile",
-		panels: [
-			{
-				id: "base",
-				hash: '/base'
+				id: "photo",
+				hash: '/photo'
 			}
 		]
 	}

@@ -40,3 +40,69 @@ body[scheme=vkcom_dark] .vkuiGradient--md-tint.vkuiGradient--to-top {
     margin-bottom: 24px;
     color: var(--text_secondary)
 }
+
+.calc-container {
+    padding-bottom: 5px;
+    padding-top: 5px;
+}
+
+.calc-button {
+    width: 17%;
+}
+
+.vkuiButton--sz-l .vkuiButton__after, .vkuiButton--sz-l .vkuiButton__content:last-child {
+    padding-right: 0px;
+}
+
+.vkuiButton--sz-l .vkuiButton__content:first-child {
+    padding-left: 0px;
+}
+
+body[scheme=bright_light] .calc-container {
+    background-color: #F3F3F3;
+}
+
+body[scheme=bright_light] .calc-button-number {
+    background-color: white;
+    color: black;
+}
+
+body[scheme=bright_light] .calc-button-other {
+    background-color: #4C5457;
+    color: white;
+}
+
+body[scheme=bright_light] .calc-button-send {
+    background-color: #1EA3B6;
+    color: white;
+}
+
+body[scheme=bright_light] .calc-button-sign {
+    background-color: #D8D8D8;
+    color: black;
+}
+
+
+body[scheme=bright_light] .calc-container {
+    background-color: #2C2C2E;
+}
+
+body[scheme=space_gray] .calc-button-number {
+    background-color: #5B5B5B;
+    color: white;
+}
+
+body[scheme=space_gray] .calc-button-other {
+    background-color: #212121;
+    color: white;
+}
+
+body[scheme=space_gray] .calc-button-send {
+    background-color: #0986FC;
+    color: white;
+}
+
+body[scheme=space_gray] .calc-button-sign {
+    background-color: #363636;
+    color: white;
+}
