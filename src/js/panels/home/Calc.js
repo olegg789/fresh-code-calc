@@ -1,250 +1,77 @@
-import React from "react";
+import React, {useState} from "react";
 import {withRouter} from "@reyzitwo/react-router-vkminiapps";
 import {
+    Button,
     FixedLayout,
-    ButtonGroup, Button
+    Placeholder
 } from "@vkontakte/vkui";
-import {
-    Icon24ArrowTurnLeftOutline,
-    Icon28ArrowLeftOutline,
-    Icon28ArrowRightOutline,
-    Icon28Backspace,
-    Icon28Send
-} from "@vkontakte/icons";
+
+import Keyboard from "../../components/keyboard";
+import { parse } from 'node-html-parser';
 
 function Calc({router}) {
+    const [value, setValue] = useState({screen: '', math: ''});
+
+    async function changeValue(screen, math) {
+        let str = value
+        str.screen = str.screen + screen
+        str.math = str.math + math
+        await setValue(str)
+        console.log(value)
+    }
+
+    async function clearValue() {
+        let str = value
+        str.screen = ''
+        str.math = ''
+        await setValue(str)
+        console.log(value)
+    }
+
+    async function deleteLast() {
+        let str = value
+        str.screen = str.screen.slice(0, -1)
+        str.math = str.math.slice(0, -1)
+        await setValue(str)
+        console.log(value)
+    }
+
+    async function calculate() {
+        try {
+            fetch("https://mathsolver.microsoft.com/ru/solve-problem/x^2-4x-5=0")
+                .then(response => response.text())
+                .then(data => {
+                    const root = parse(data);
+
+                    //JSON.parse(root.querySelectorAll("script")[1].childNodes[0]._rawText).props.pageProps.response.mathSolverResult.actions[0].templateSteps - решения по шагам (не всегда что-то есть в массиве, иногда майкрософт возвращает пустой массив, но ответ есть)
+
+                    console.log(JSON.parse(root.querySelectorAll("script")[1].childNodes[0]._rawText).props.pageProps.response.mathSolverResult) //а тут я просто тестил ¯\_(ツ)_/¯
+                })
+        }
+        catch (err) {
+            console.error(err)
+        }
+    }
+
     return (
         <>
+            {value.screen === '' ?
+            <Placeholder
+                header='Введите математическую задачу'
+                className='calc-placeholder'
+            /> :
+                <div>{value.screen}</div>
+            }
+            <Button onClick={() => calculate()}>Click</Button>
             <FixedLayout
                 vertical={'bottom'}
                 style={{paddingBottom: 0}}
             >
-                <ButtonGroup
-                    className='calc-container'
-                    mode='vertical'
-                    gap='s'
-                    align='center'
-                    stretched
-                >
-                    <ButtonGroup
-                        mode='horizontal'
-                        gap='s'
-                        stretched
-                    >
-                        <Button
-                            size='l'
-                            className='calc-button calc-button-other'
-                        >
-                            AC
-                        </Button>
-                        <Button
-                            size='l'
-                            className='calc-button calc-button-sign'
-                        >
-                            %
-                        </Button>
-                        <Button
-                            size='l'
-                            className='calc-button calc-button-number'
-                        >
-                            7
-                        </Button>
-                        <Button
-                            size='l'
-                            className='calc-button calc-button-number'
-                        >
-                            8
-                        </Button>
-                        <Button
-                            size='l'
-                            className='calc-button calc-button-number'
-                        >
-                            9
-                        </Button>
-                        <Button
-                            size='l'
-                            className='calc-button calc-button-sign'
-                        >
-                            ÷
-                        </Button>
-                    </ButtonGroup>
-
-                    <ButtonGroup
-                        style={{marginTop: 10}}
-                        mode='horizontal'
-                        gap='s'
-                        stretched
-                    >
-                        <Button
-                            size='l'
-                            className='calc-button calc-button-sign'
-                        >
-                            x
-                        </Button>
-                        <Button
-                            size='l'
-                            className='calc-button calc-button-sign'
-                        >
-                            √
-                        </Button>
-                        <Button
-                            size='l'
-                            className='calc-button calc-button-number'
-                        >
-                            4
-                        </Button>
-                        <Button
-                            size='l'
-                            className='calc-button calc-button-number'
-                        >
-                            5
-                        </Button>
-                        <Button
-                            size='l'
-                            className='calc-button calc-button-number'
-                        >
-                            6
-                        </Button>
-                        <Button
-                            size='l'
-                            className='calc-button calc-button-sign'
-                        >
-                            ×
-                        </Button>
-                    </ButtonGroup>
-
-                    <ButtonGroup
-                        style={{marginTop: 10}}
-                        mode='horizontal'
-                        gap='s'
-                        stretched
-                    >
-                        <Button
-                            size='l'
-                            className='calc-button calc-button-sign'
-                        >
-                            x²
-                        </Button>
-                        <Button
-                            size='l'
-                            className='calc-button calc-button-sign'
-                        >
-                            x/y
-                        </Button>
-                        <Button
-                            size='l'
-                            className='calc-button calc-button-number'
-                        >
-                            1
-                        </Button>
-                        <Button
-                            size='l'
-                            className='calc-button calc-button-number'
-                        >
-                            2
-                        </Button>
-                        <Button
-                            size='l'
-                            className='calc-button calc-button-number'
-                        >
-                            3
-                        </Button>
-                        <Button
-                            size='l'
-                            className='calc-button calc-button-sign'
-                        >
-                            -
-                        </Button>
-                    </ButtonGroup>
-
-                    <ButtonGroup
-                        style={{marginTop: 10}}
-                        mode='horizontal'
-                        gap='s'
-                        stretched
-                    >
-                        <Button
-                            size='l'
-                            className='calc-button calc-button-sign'
-                        >
-                            (
-                        </Button>
-                        <Button
-                            size='l'
-                            className='calc-button calc-button-sign'
-                        >
-                            )
-                        </Button>
-                        <Button
-                            size='l'
-                            className='calc-button calc-button-number'
-                        >
-                            0
-                        </Button>
-                        <Button
-                            size='l'
-                            className='calc-button calc-button-number'
-                        >
-                            .
-                        </Button>
-                        <Button
-                            size='l'
-                            className='calc-button calc-button-sign'
-                        >
-                            =
-                        </Button>
-                        <Button
-                            size='l'
-                            className='calc-button calc-button-sign'
-                        >
-                            +
-                        </Button>
-                    </ButtonGroup>
-
-                    <ButtonGroup
-                        style={{marginTop: 10}}
-                        mode='horizontal'
-                        gap='s'
-                        stretched
-                    >
-                        <Button
-                            size='l'
-                            className='calc-button calc-button-other'
-                        >
-                            f∫
-                        </Button>
-                        <Button
-                            size='l'
-                            className='calc-button calc-button-other'
-                        >
-                            <Icon28ArrowLeftOutline/>
-                        </Button>
-                        <Button
-                            size='l'
-                            className='calc-button calc-button-other'
-                        >
-                            <Icon28ArrowRightOutline/>
-                        </Button>
-                        <Button
-                            size='l'
-                            className='calc-button calc-button-other'
-                        >
-                            <Icon24ArrowTurnLeftOutline/>
-                        </Button>
-                        <Button
-                            size='l'
-                            className='calc-button calc-button-other'
-                        >
-                            <Icon28Backspace/>
-                        </Button>
-                        <Button
-                            size='l'
-                            className='calc-button calc-button-send'
-                        >
-                            <Icon28Send/>
-                        </Button>
-                    </ButtonGroup>
-                </ButtonGroup>
+                <Keyboard
+                    action={(screen, math) => changeValue(screen, math)}
+                    clear={() => clearValue()}
+                    deleteLast={() => deleteLast()}
+                />
             </FixedLayout>
         </>
     )

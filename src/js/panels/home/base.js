@@ -16,7 +16,7 @@ function HomePanelBase({ router, storage, panel, setPanel }) {
             <PanelHeader
                 separator={storage.isDesktop}
             >
-                <Tabs>
+                <Tabs mode='accent'>
                     <TabsItem
                         selected={panel === 'calc'}
                         onClick={() => setPanel('calc')}

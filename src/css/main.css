@@ -59,7 +59,7 @@ body[scheme=vkcom_dark] .vkuiGradient--md-tint.vkuiGradient--to-top {
 }
 
 body[scheme=bright_light] .calc-container {
-    background-color: #F3F3F3;
+    background-color: #F3F3F3 !important;
 }
 
 body[scheme=bright_light] .calc-button-number {
@@ -105,4 +105,8 @@ body[scheme=space_gray] .calc-button-send {
 body[scheme=space_gray] .calc-button-sign {
     background-color: #363636;
     color: white;
+}
+
+.calc-placeholder {
+    margin-top: 40%;
 }
