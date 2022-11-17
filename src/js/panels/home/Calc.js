@@ -1,76 +1,66 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import useDebounce from "../../../hooks/useDebounce";
 import { withRouter } from "@reyzitwo/react-router-vkminiapps";
-import { Button, FixedLayout, Placeholder } from "@vkontakte/vkui";
+import { FixedLayout, Placeholder, Spinner } from "@vkontakte/vkui";
+import { InlineMath } from "react-katex";
 
 import Keyboard from "../../components/keyboard";
-import { parse } from "node-html-parser";
+import api from "../../../functions/api";
 
 function Calc({ router }) {
-  const [value, setValue] = useState({ screen: "", math: "" });
+  const [value, setValue] = useState({
+    value: "",
+    screen: { value: "", arr: [] },
+  });
 
-  async function changeValue(screen, math) {
-    let str = value;
-    str.screen = str.screen + screen;
-    str.math = str.math + math;
-    await setValue(str);
-    console.log(value);
-  }
+  const [result, setResult] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
-  async function clearValue() {
-    let str = value;
-    str.screen = "";
-    str.math = "";
-    await setValue(str);
-    console.log(value);
-  }
-
-  async function deleteLast() {
-    let str = value;
-    str.screen = str.screen.slice(0, -1);
-    str.math = str.math.slice(0, -1);
-    await setValue(str);
-    console.log(value);
-  }
-
-  async function calculate() {
-    try {
-      fetch(
-        "https://corsanywhere.herokuapp.com/https://mathsolver.microsoft.com/ru/solve-problem/x%5E2-4x-5=0"
-      )
-        .then((response) => response.text())
-        .then((data) => {
-          const root = parse(data);
-
-          //JSON.parse(root.querySelectorAll("script")[1].childNodes[0]._rawText).props.pageProps.response.mathSolverResult.actions[0].templateSteps - решения по шагам (не всегда что-то есть в массиве, иногда майкрософт возвращает пустой массив, но ответ есть)
-
-          console.log(
-            JSON.parse(
-              root.querySelectorAll("script")[1].childNodes[0]._rawText
-            ).props.pageProps.response.mathSolverResult
-          ); //а тут я просто тестил ¯\_(ツ)_/¯
-        });
-    } catch (err) {
-      console.error(err);
+  useEffect(() => {
+    if (value.value.length > 0) {
+      setIsLoading(true);
+      setResult(null);
+      calculate(value.value);
     }
-  }
+  }, [value.value]);
+
+  ///!!! https://katex.org/docs/supported.html, тут все функции и операторы, которые поддерживает katex И microsoft solver
+  const calculate = useDebounce((math) => {
+    if (math.length === 0) {
+      return setIsLoading(false);
+    }
+
+    api(math).then((data) => {
+      setIsLoading(false);
+      setResult(data.actions[0].solution.replaceAll("$", ""));
+    });
+  }, 1000);
 
   return (
     <>
-      {value.screen === "" ? (
-        <Placeholder
-          header="Введите математическую задачу"
-          className="calc-placeholder"
-        />
+      {value.value === "" ? (
+        <Placeholder className="calc-placeholder">
+          Введите математическую задачу
+        </Placeholder>
       ) : (
-        <div>{value.screen}</div>
+        <div className={"calc-text"}>
+          <InlineMath>{value.value}</InlineMath>
+        </div>
       )}
-      <Button onClick={() => calculate()}>Click</Button>
+
       <FixedLayout vertical={"bottom"} style={{ paddingBottom: 0 }}>
-        <Keyboard
-          action={(screen, math) => changeValue(screen, math)}
-          clear={() => clearValue()}
-          deleteLast={() => deleteLast()}
-        />
+        {isLoading ? (
+          <div className={"Spinner"}>
+            <Spinner size="small" />
+          </div>
+        ) : (
+          result !== null && (
+            <div className={"calc-text"}>
+              <InlineMath>{result}</InlineMath>
+            </div>
+          )
+        )}
+        <Keyboard value={value} setValue={setValue} calculate={calculate} />
       </FixedLayout>
     </>
   );
