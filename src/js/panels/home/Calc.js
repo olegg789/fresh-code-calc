@@ -1,13 +1,18 @@
 import React, { useEffect, useState } from "react";
 import useDebounce from "../../../hooks/useDebounce";
 import { withRouter } from "@reyzitwo/react-router-vkminiapps";
-import { FixedLayout, Placeholder, Spinner } from "@vkontakte/vkui";
+import {Button, FixedLayout, Placeholder, Spinner} from "@vkontakte/vkui";
 import { InlineMath } from "react-katex";
 
 import Keyboard from "../../components/keyboard";
 import api from "../../../functions/api";
+import {Icon24ArrowRightOutline} from "@vkontakte/icons";
+import {useDispatch} from "react-redux";
+import {set} from "../../reducers/mainReducer";
 
 function Calc({ router }) {
+  const dispatch = useDispatch()
+
   const [value, setValue] = useState({
     value: "",
     screen: { value: "", arr: [] },
@@ -33,6 +38,8 @@ function Calc({ router }) {
     api(math).then((data) => {
       setIsLoading(false);
       setResult(data.actions[0].solution.replaceAll("$", ""));
+      console.log(data)
+      dispatch(set({key: "steps", value: data.actions}))
     });
   }, 1000);
 
@@ -54,11 +61,21 @@ function Calc({ router }) {
             <Spinner size="small" />
           </div>
         ) : (
-          result !== null && (
+          result !== null && (<>
             <div className={"calc-text"}>
               <InlineMath>{result}</InlineMath>
             </div>
-          )
+              <div className={"calc-steps-container"}>
+                <Button
+                    className={"calc-steps-button"}
+                    size='m'
+                    after={<Icon24ArrowRightOutline />}
+                    onClick={() => router.toPanel('steps')}
+                >
+                  Посмотреть решение
+                </Button>
+            </div>
+          </>)
         )}
         <Keyboard value={value} setValue={setValue} calculate={calculate} />
       </FixedLayout>

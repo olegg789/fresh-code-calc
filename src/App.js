@@ -24,6 +24,7 @@ import HomeBotsListModal from "./js/components/modals/HomeBotsListModal";
 import HomeBotInfoModal from "./js/components/modals/HomeBotInfoModal";
 
 import HomePanelBase from "./js/panels/home/base";
+import Steps from "./js/panels/home/steps";
 
 const App = withAdaptivity(
   ({ viewWidth, router }) => {
@@ -96,6 +97,10 @@ const App = withAdaptivity(
                       setPanel={setPanel}
                     />
                   </Panel>
+
+                    <Panel id="steps">
+                        <Steps/>
+                    </Panel>
                 </View>
               </Epic>
             </SplitCol>

@@ -9,6 +9,11 @@ const structure = [
 			},
 
 			{
+				id: "steps",
+				hash: '/steps'
+			},
+
+			{
 				id: "photo",
 				hash: '/photo'
 			}

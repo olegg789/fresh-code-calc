@@ -10,6 +10,7 @@ import {
 } from "@vkontakte/icons";
 
 function Keyboard({ value, setValue, calculate }) {
+// eslint-disable-next-line
   const [characterNumber, setCharacterNumber] = useState(-1);
 
   //ну тут без бутылки пива не разберешься
@@ -42,7 +43,7 @@ function Keyboard({ value, setValue, calculate }) {
 
   //omg, мне пока лень ВОТ ЭТО делать
   //здесь типо надо сделать перемещение курсора внутри примера
-  const moveCursor = (direction) => {
+  /*const moveCursor = (direction) => {
     if (direction === "left") {
       if (characterNumber === -1) {
         setCharacterNumber(value.length - 1);
@@ -54,7 +55,7 @@ function Keyboard({ value, setValue, calculate }) {
         setCharacterNumber((old) => old + 1);
       }
     }
-  };
+  };*/
 
   return (
     <ButtonGroup
