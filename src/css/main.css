@@ -76,6 +76,20 @@
   border-radius: 25px;
 }
 
+.steps__cell {
+  padding-left: 0px;
+}
+
+.steps-result {
+  margin: 105% 12px 0px 12px;
+  padding-bottom: 0px !important;
+  background-color: inherit;
+}
+
+.result-result {
+  margin-bottom: 10px;
+}
+
 body[scheme="bright_light"] .calc-container {
   background-color: #f3f3f3 !important;
 }

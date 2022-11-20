@@ -7,7 +7,7 @@ import { InlineMath } from "react-katex";
 import Keyboard from "../../components/keyboard";
 import api from "../../../functions/api";
 import {Icon24ArrowRightOutline} from "@vkontakte/icons";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {set} from "../../reducers/mainReducer";
 
 function Calc({ router }) {
@@ -68,7 +68,7 @@ function Calc({ router }) {
               <div className={"calc-steps-container"}>
                 <Button
                     className={"calc-steps-button"}
-                    size='m'
+                    size='s'
                     after={<Icon24ArrowRightOutline />}
                     onClick={() => router.toPanel('steps')}
                 >

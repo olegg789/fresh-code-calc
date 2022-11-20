@@ -30,6 +30,7 @@ function Keyboard({ value, setValue, calculate }) {
 
   //и тут тоже
   const deleteLast = () => {
+    if (value.value === "") return
     setValue((old) => ({
       value: old.value
         .replace("\\mid", "")
